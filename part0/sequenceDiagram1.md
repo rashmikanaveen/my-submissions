@@ -5,7 +5,8 @@
 
 ```mermaid
 sequenceDiagram
-    
+    participant browser
+    participant server
 
     Note right of browser: User writes a new note and clicks the Save button
 
