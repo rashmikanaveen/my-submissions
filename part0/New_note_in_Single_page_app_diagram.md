@@ -19,7 +19,7 @@ sequenceDiagram
 
     Note right of browser: The browser follows the redirect and reloads the notes page
     
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
     activate server
     server-->>browser: HTML document
     deactivate server
@@ -36,13 +36,11 @@ sequenceDiagram
 
     Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
     activate server
     server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, { "content": "new note content", "date": "2024-7-10" }, ... ]
     deactivate server
 
     Note right of browser: The browser executes the callback function that renders the notes
-
 ```
 
-# hedder
