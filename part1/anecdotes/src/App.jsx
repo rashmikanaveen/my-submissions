@@ -3,6 +3,36 @@ import { useState } from 'react'
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
+const getMaxIndex=(points)=>{
+  let max=points[0]
+  let maxIndex=0
+  for(let i=1;i<points.length;i++){
+    if(points[i]>max){
+      max=points[i]
+      maxIndex=i
+    }
+  }
+  return maxIndex
+
+}
+const ShowAnecdoteWithLargestNumberOfVotes =({anecdotes,points})=>{
+  let total = 0;
+  for (let i = 0; i < points.length; i++) {
+    total += points[i];
+    }
+  
+  if(total===0){
+      return (<div></div>)
+    
+  }
+  let maxIndex=getMaxIndex(points)
+  console.log("This is the index of the anecdote with most votes",maxIndex)
+  return (<div>
+    <h1>Anecdote with Most votes</h1>
+    <p>{anecdotes[maxIndex]} <br />has{points[maxIndex]} votes</p>
+  </div>)
+  
+}
 
 
 const App = () => {
@@ -16,9 +46,11 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+  
    
   const [selected, setSelected] = useState(0)
-  console.log(anecdotes.length)
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0));
+  
 
   const getSelected =()=>{
     const number= getRandomInt(anecdotes.length)
@@ -27,11 +59,21 @@ const App = () => {
   }
    
    
+  const handVote = () => {
+    const newPoints = [...points];
+    newPoints[selected] += 1;
+    setPoints(newPoints);
+  };
+  console.log(...points)
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]} <br />
+      has {points[selected]} votes <br />
+      <button onClick={handVote}>vote</button>
       <button onClick={getSelected}>next anecdote </button>
+      <ShowAnecdoteWithLargestNumberOfVotes anecdotes={anecdotes} points={points}/>
       
     </div>
   )
