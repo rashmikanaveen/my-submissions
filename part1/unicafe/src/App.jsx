@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
-const Display =({ good, neutral, bad })=>{
+const Statistics =({ good, neutral, bad })=>{
+  const all=good+neutral+bad
+  console.log("Total of feedbaks",all)
   if(good===0 && neutral===0 && bad===0){
     return(
       <div>
@@ -10,31 +12,75 @@ const Display =({ good, neutral, bad })=>{
   }
   return(
     <div>
+
+<table>
+  <tbody>
+    <tr>
+      <td><StatisticLine text='good' value={good}/></td>
+    </tr>
+    <tr>
+      <td><StatisticLine text='neutral' value={neutral}/></td>
+    </tr>
+    <tr>
+      <td><StatisticLine text='bad' value={bad}/></td>
+    </tr>
+    <tr>
+      <td><StatisticLine text='all' value={all}/></td>
+    </tr>
+    <tr>
+      <td><StatisticLine text='average' value={(good-bad)/all}/></td>
+    </tr>
+    <tr>
+      <td><StatisticLine text='positive' value={(good/all)*100+'%'}/></td>
+    </tr>
+  </tbody>
+</table>
       
-      <p>good {good} <br />
-      neutral {neutral} <br />
-      bad {bad}<br />
-      all {good+neutral+bad}<br />
-      average {(good-bad)/(good+neutral+bad)}<br />
-      positive {(good/(good+neutral+bad))*100} % <br />
-      </p>
+      
+      
+      
+      
+      
+      
+      
     </div>
   )
 }
+const StatisticLine=({text,value})=>{
+  return(
+    <div>{text} {value}</div>
+  )
+}
+
+
+const Button =(props)=>{
+  const {handleClick,text}=props
+  return(
+    <button onClick={handleClick}>{text}</button>
+  )
+}
+
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  const setGoodincrement=()=>setGood(good+1)
+  const setNeutralincrement=()=>setNeutral(neutral+1)
+  const setBadincrement=()=>setBad(bad+1)
+
   return (
     <div>
-      <h1>give feed back</h1>
-      <button onClick={()=>setGood(good+1)}>good</button>
-      <button onClick={()=>setNeutral(neutral+1)}>neutral</button>
-      <button onClick={()=>setBad(bad+1)}>bad</button>
+      <h1>give feedback</h1>
+      <Button handleClick={setGoodincrement} text='good'/>
+      <Button handleClick={setNeutralincrement} text='neutral'/>
+      <Button handleClick={setBadincrement} text='bad'/>
+      
       <h2>Statistics</h2>
-      <Display good={good} neutral={neutral} bad={bad}/>
+      <Statistics good={good} neutral={neutral} bad={bad}/>
+      
       
       
       
