@@ -1,5 +1,10 @@
 import { useState } from 'react'
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -13,10 +18,21 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  console.log(anecdotes.length)
+
+  const getSelected =()=>{
+    const number= getRandomInt(anecdotes.length)
+    console.log("This is ",number,"selected anecdote")
+    setSelected(number)
+  }
+   
+   
 
   return (
     <div>
-      {anecdotes[selected]}
+      {anecdotes[selected]} <br />
+      <button onClick={getSelected}>next anecdote </button>
+      
     </div>
   )
 }
