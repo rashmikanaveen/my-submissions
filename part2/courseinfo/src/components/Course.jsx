@@ -17,7 +17,7 @@ const Course_1 = ({ course }) => {
       <h2>{name}</h2>
       {parts.map((part, index) => (
         <div key={index}>
-          {part.name} {part.exercises}
+          {part.name} {part.exercises}<br /><br />
           
         </div>
       ))}
@@ -29,7 +29,7 @@ const Sum =({parts})=>{
   const total = parts.reduce((sum, part) => sum + part.exercises, 0)
   return(
     <div>
-      <b>total of {total} exercises</b>
+      <b>total of {total} exercises</b><br />
     </div>
   )
   console.log(total);
@@ -86,10 +86,10 @@ const Course = () => {
     <div>
       <h1>Web development curriculum</h1>
       
-      <Course_1 course={courses[0]} />
+      <Course_1 course={courses[0]} /><br />
       <Sum parts={courses[0].parts} />
       
-      <Course_1 course={courses[1]} />
+      <Course_1 course={courses[1]} /><br />
       <Sum parts={courses[1].parts} />
       
     </div>
