@@ -41,13 +41,11 @@ const App = () => {
       setNewName("")
       setNumber("")
     }
-    const findPerson = (event) => {
-      event.preventDefault()
-      const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
-      setPersons(filteredPersons)
-    }
     
     
+  }
+  const findPerson = (event) => {
+    event.preventDefault()
   }
   
 
@@ -55,9 +53,9 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       
-      <form onSubmit={findPerson}> 
+      <form onSubmit={findPerson} > 
         <div>
-          filter shown with <input type="text"/>
+          filter shown with <input type="text" placeholder='Ex:- enter a or A'/>
         </div>
         <div>
           <button type="submit">add</button>
