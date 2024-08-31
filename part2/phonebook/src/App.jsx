@@ -58,7 +58,7 @@ const App = () => {
           filter shown with <input type="text" placeholder='Ex:- enter a or A'/>
         </div>
         <div>
-          <button type="submit">add</button>
+          <button type="submit">Show</button>
         </div>
       </form>
       <form onSubmit={addPerson}>
