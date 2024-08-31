@@ -7,6 +7,7 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
+  const [filterdPersons, setfilterPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNumber] = useState("")
   const [filter, setFilter] = useState("")
@@ -21,6 +22,9 @@ const App = () => {
   const changeNumber = (event) => {
     setNumber(event.target.value)
   }
+  const changeFilter = (event) => {
+    setFilter(event.target.value)
+  }
 
   const addPerson= (event) => {
     event.preventDefault()
@@ -28,7 +32,7 @@ const App = () => {
 
     
     
-    if(persons.some(person => person.name === newName)){
+    if(persons.some(person => person.name.toLowerCase() === newName.toLowerCase())){
       alert(`${newName} is already added to phonebook`)
     }
     else{
@@ -46,7 +50,25 @@ const App = () => {
   }
   const findPerson = (event) => {
     event.preventDefault()
+    const subfilterInLowerCase = filter.toLowerCase()
+    
+    setfilterPersons(persons.filter(person => person.name.toLowerCase().includes(subfilterInLowerCase)))
+    
+
+    
   }
+  const ShowFilterPersons = () => {
+    return(
+      <div>
+        <p>{filterdPersons.length} results</p>
+        {filterdPersons.map((person, index) => (
+        <p key={index} style={{ margin: '0px ' }}>{person.name} {person.number}</p>
+))}
+      </div>
+
+    )
+  }
+  
   
 
   return (
@@ -55,11 +77,14 @@ const App = () => {
       
       <form onSubmit={findPerson} > 
         <div>
-          filter shown with <input type="text" placeholder='Ex:- enter a or A'/>
+  
+          filter shown with <input type="text" placeholder='Ex:- enter a or A' value={filter} onChange={changeFilter}/>
         </div>
         <div>
           <button type="submit">Show</button>
         </div>
+        <ShowFilterPersons/>
+        
       </form>
       <form onSubmit={addPerson}>
       <h2>add a new</h2>
