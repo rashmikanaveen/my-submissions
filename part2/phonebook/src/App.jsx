@@ -64,7 +64,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter persons={persons}/>
       <form onSubmit={addPerson}>
-      <h2>add a new</h2>
+      <h2>Add a new</h2>
         <div>
           name: <input value={newName} onChange={changeName} placeholder='Enter the name' required/>
         </div>
