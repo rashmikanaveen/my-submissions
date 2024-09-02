@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PersonsAndNames   from './components/PersonsAndNames'
 import Filter from './components/Filter'
-
+import './App.css'; 
 
 
 
