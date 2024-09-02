@@ -32,7 +32,7 @@ const Filter=(props)=>{
         <form onSubmit={findPerson} > 
         <div>
   
-          filter shown with <input type="text" placeholder='Ex:- enter a or A' value={filter} onChange={changeFilter}/>
+          filter shown with<br /> <input type="text" placeholder='Ex:- enter a or A' value={filter} onChange={changeFilter}/>
         </div>
         <div>
           <button type="submit">Show</button>

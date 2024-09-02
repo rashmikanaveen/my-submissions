@@ -66,9 +66,10 @@ const App = () => {
       <form onSubmit={addPerson}>
       <h2>Add a new</h2>
         <div>
-          name: <input value={newName} onChange={changeName} placeholder='Enter the name' required/>
+          name <br /><input value={newName} onChange={changeName} placeholder='Enter the name' required/>
         </div>
-        <div>number: <input value={newNumber} onChange={changeNumber} required type="tel" placeholder='Enter the number'/></div>
+        
+        <div>number<br /> <input value={newNumber} onChange={changeNumber} required type="tel" placeholder='Enter the number'/></div>
         <div>
           <button type="submit">add</button>
         </div>
