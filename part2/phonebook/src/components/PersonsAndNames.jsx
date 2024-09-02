@@ -1,3 +1,4 @@
+import '../App.css'; 
 const PersonsAndNames=(props)=>{
     const persons=props.persons
     return(

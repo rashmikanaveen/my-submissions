@@ -45,3 +45,14 @@
   button:hover {
     background-color: #0056b3;
   }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.form-container {
+    text-align: left; /* Keep the text aligned to the left */
+}

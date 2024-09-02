@@ -1,3 +1,4 @@
+import '../App.css'; 
 // show the filtered persons
 const ShowFilterPersons = (props) => {
     const filterdPersons = props.filterdPersons
