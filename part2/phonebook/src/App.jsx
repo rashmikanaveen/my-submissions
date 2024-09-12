@@ -3,6 +3,7 @@ import PersonsAndNames   from './components/PersonsAndNames'
 import Filter from './components/Filter'
 import './App.css'; 
 import axios from 'axios'
+import personService from './services/persons'
 
 
 const App = () => {
