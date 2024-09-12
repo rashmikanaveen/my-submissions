@@ -11,7 +11,7 @@ import personService from '../services/persons'
 
 const PersonsAndNames = (props) => {
   const persons = props.persons;
-  //const [persons, setPersons] = useState([])
+  
 
   
 

@@ -1,8 +1,11 @@
 import { useState,useEffect } from 'react'
-import PersonsAndNames   from './components/PersonsAndNames'
+//import PersonsAndNames   from './components/PersonsAndNames'
 import Filter from './components/Filter'
 import './App.css'; 
 import personService from './services/persons'
+import axios from 'axios'
+
+
 
 
 const App = () => {
@@ -18,6 +21,50 @@ const App = () => {
         setPersons(response)
       })
   }, [])
+
+  
+
+const PersonsAndNames = (props) => {
+  const persons = props.persons;
+  
+
+  
+
+  const ShowPerson = ({ person }) => {
+    return (
+      <li>
+        {person.name} {person.number} <button onClick={() => DeleteNameAndNumber(person.id)}>delete</button>
+      </li>
+    );
+  };
+
+  const DeleteNameAndNumber = (id) => {
+    //console.log(name + ' wants to be deleted');
+    const url = `http://localhost:3001/persons/${id}`
+    
+    const changPersons=persons.filter(person => person.id !== id)
+    axios.delete(url)
+    .then(console.log('deleted'))
+    .then(setPersons(changPersons)
+    )
+    
+    
+  };
+
+  
+
+  return (
+    <div>
+      <p>{persons.length} results</p>
+      <ul>
+        {persons.map((person) => (
+          <ShowPerson key={person.id} person={person}  />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 
 
 
