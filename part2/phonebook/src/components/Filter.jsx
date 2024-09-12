@@ -3,7 +3,7 @@ import ShowFilterPersons from './ShowFilterPersons'
 import { useState } from 'react'
 const Filter=(props)=>{
     const persons=props.persons
-    const filtPies=props.filtPies
+    
     const [filterdPersons, setfilterPersons] = useState([])
     const [filter, setFilter] = useState("")
     //change the filter name
