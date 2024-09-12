@@ -75,7 +75,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter persons={persons}/>
+      <Filter/>
       <form onSubmit={addPerson}>
       <h2>Add a new</h2>
         <div>

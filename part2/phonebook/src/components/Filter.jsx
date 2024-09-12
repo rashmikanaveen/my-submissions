@@ -1,11 +1,21 @@
 import ShowFilterPersons from './ShowFilterPersons'
 //import '../App.css'; 
-import { useState } from 'react'
-const Filter=(props)=>{
-    const persons=props.persons
-    
+import { useState,useEffect } from 'react'
+import personService from '../services/persons'
+const Filter=()=>{
+    //const persons=props.persons
+    const [persons, setPersons] = useState([])
     const [filterdPersons, setfilterPersons] = useState([])
     const [filter, setFilter] = useState("")
+    useEffect(() => {
+      personService
+        .getAll()
+        .then(response => {
+          setPersons(response)
+        })
+    }, [])
+
+
     //change the filter name
   const changeFilter = (event) => {
     setFilter(event.target.value)
