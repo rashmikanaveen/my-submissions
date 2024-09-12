@@ -15,7 +15,7 @@ const App = () => {
     personService
       .getAll()
       .then(response => {
-        setPersons(response.data)
+        setPersons(response)
       })
   }, [])
   
@@ -52,7 +52,7 @@ const App = () => {
       personService
       .create(personObject)
       .then(response => {
-        setPersons(persons.concat(response.data))
+        setPersons(persons.concat(response))
       })
       
       
