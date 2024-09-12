@@ -1,7 +1,9 @@
 import React from 'react';
 import '../App.css'; 
 import axios from 'axios'
+import { useState,useEffect } from 'react'
 //import personService from './services/persons'
+import personService from '../services/persons'
 
 
 
@@ -9,6 +11,9 @@ import axios from 'axios'
 
 const PersonsAndNames = (props) => {
   const persons = props.persons;
+  //const [persons, setPersons] = useState([])
+
+  
 
   const ShowPerson = ({ person }) => {
     return (
@@ -19,7 +24,7 @@ const PersonsAndNames = (props) => {
   };
 
   const DeleteNameAndNumber = (id) => {
-    console.log(name + ' wants to be deleted');
+    //console.log(name + ' wants to be deleted');
     const url = `http://localhost:3001/persons/${id}`
     
     const changPersons=persons.filter(person => person.id !== id)
