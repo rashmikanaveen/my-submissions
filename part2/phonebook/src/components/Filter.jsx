@@ -1,5 +1,5 @@
 import ShowFilterPersons from './ShowFilterPersons'
-import '../App.css'; 
+//import '../App.css'; 
 import { useState } from 'react'
 const Filter=(props)=>{
     const persons=props.persons
