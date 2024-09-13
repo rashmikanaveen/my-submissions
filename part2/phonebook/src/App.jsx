@@ -49,8 +49,8 @@ const PersonsAndNames = (props) => {
     const changPersons=persons.filter(person => person.id !== id)
     axios.delete(url)
     .then(console.log('deleted'))
-    .then(setPersons(changPersons)
-    )
+    .then(setPersons(changPersons))
+    
     }
     
     
