@@ -32,29 +32,26 @@ const PersonsAndNames = (props) => {
 
   const ShowPerson = ({ person }) => {
     return (
-      <li>
-        {person.name} {person.number} <button onClick={() => DeleteNameAndNumber(person.id)}>delete</button>
+      <li >
+        {person.name} {person.number} <button onClick={() => DeleteNameAndNumber(person.id,'Do you really want to delete this contact?')}>delete</button>
       </li>
     );
   };
 
-  const DeleteNameAndNumber = (id) => {
-    const userConfirm = window.confirm('Do you really want to delete this contact?')
+  const DeleteNameAndNumber = (id,str) => {
+    const userConfirm = window.confirm(str)
     
     if(userConfirm){
       
     //console.log(name + ' wants to be deleted');
-    const url = `http://localhost:3001/persons/${id}`
-    
-    const changPersons=persons.filter(person => person.id !== id)
-    axios.delete(url)
-    .then(console.log('deleted'))
-    .then(setPersons(changPersons))
+    DeletePersonFromArray(id)
     
     }
     
     
   };
+
+
 
   
 
@@ -69,6 +66,16 @@ const PersonsAndNames = (props) => {
     </div>
   );
 };
+
+const DeletePersonFromArray=(id)=>{
+  const url = `http://localhost:3001/persons/${id}`
+    
+    const changPersons=persons.filter(person => person.id !== id)
+    axios.delete(url)
+    
+    .then(setPersons(changPersons))
+
+}
 
 
 
@@ -93,31 +100,48 @@ const PersonsAndNames = (props) => {
   const addPerson= (event) => {
     event.preventDefault()
     
-
-
-    
-    
-    if(persons.some(person => person.name.toLowerCase() === newName.toLowerCase())){
-      alert(`${newName} is already added to phonebook`)
+    const personObject = {
+      name: newName ,
+      number: newNumber
     }
-    else{
-      const personObject = {
-        name: newName ,
-        number: newNumber
+    const exist =persons.some(person => person.name.toLowerCase() === newName.toLowerCase())
+    console.log(newName,exist)
+    
+    
+    if(exist){
+      const existperson = persons.find(item => item.name === newName);
+      const id = existperson ? existperson.id : null;
+      
+      const userConfirm = window.confirm(newName+ ' is alreaddy added to phonebook, replace the old number with a new one?')
+    
+      if(userConfirm){
+      
+      //console.log(name + ' wants to be deleted');
+      const url = `http://localhost:3001/persons/${id}`
+    
+      const changPersons=persons.filter(person => person.id !== id)
+      axios.delete(url)
+    
+      .then(setPersons(changPersons))
+      
+    
+    
+      }
+      else{
+        return
       }
       
-      personService
+
+    }
+    personService
       .create(personObject)
       .then(response => {
         setPersons(persons.concat(response))
         //console.log(persons)
       })
       console.log(persons)
-      
-      
-      setNewName("")
-      setNumber("")
-    }
+    setNewName("")
+    setNumber("")
     
     
   }
