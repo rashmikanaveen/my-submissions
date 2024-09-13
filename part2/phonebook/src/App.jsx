@@ -39,6 +39,10 @@ const PersonsAndNames = (props) => {
   };
 
   const DeleteNameAndNumber = (id) => {
+    const userConfirm = window.confirm('Do you really want to delete this contact?')
+    
+    if(userConfirm){
+      
     //console.log(name + ' wants to be deleted');
     const url = `http://localhost:3001/persons/${id}`
     
@@ -47,6 +51,7 @@ const PersonsAndNames = (props) => {
     .then(console.log('deleted'))
     .then(setPersons(changPersons)
     )
+    }
     
     
   };
@@ -87,7 +92,8 @@ const PersonsAndNames = (props) => {
   // add the person to the phonebook if the name is not already in the phonebook
   const addPerson= (event) => {
     event.preventDefault()
-    console.log(persons)
+    
+
 
     
     
@@ -104,7 +110,9 @@ const PersonsAndNames = (props) => {
       .create(personObject)
       .then(response => {
         setPersons(persons.concat(response))
+        //console.log(persons)
       })
+      console.log(persons)
       
       
       setNewName("")
