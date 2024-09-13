@@ -105,7 +105,7 @@ const DeletePersonFromArray=(id)=>{
       number: newNumber
     }
     const exist =persons.some(person => person.name.toLowerCase() === newName.toLowerCase())
-    console.log(newName,exist)
+    //console.log(newName,exist)
     
     
     if(exist){
@@ -115,14 +115,16 @@ const DeletePersonFromArray=(id)=>{
       const userConfirm = window.confirm(newName+ ' is alreaddy added to phonebook, replace the old number with a new one?')
     
       if(userConfirm){
+        personService
+        .update(id,personObject)
+        .then(updateperson => {
+          setPersons(persons.map(P => P.id !== id ? P : updateperson))
+        })
+        return
       
-      //console.log(name + ' wants to be deleted');
-      const url = `http://localhost:3001/persons/${id}`
+      
     
-      const changPersons=persons.filter(person => person.id !== id)
-      axios.delete(url)
-    
-      .then(setPersons(changPersons))
+      
       
     
     
@@ -133,6 +135,7 @@ const DeletePersonFromArray=(id)=>{
       
 
     }
+    
     personService
       .create(personObject)
       .then(response => {
