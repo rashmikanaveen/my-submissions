@@ -6,13 +6,22 @@ import personService from './services/persons'
 import axios from 'axios'
 
 
-const Notification = ({ message }) => {
+const Notification = ( {message,givencolor} ) => {
   if (message === null || message=== '') {
     return null
   }
+  const notificationStyle={
+    color: givencolor,
+    background: 'lightgrey',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  }
 
   return (
-    <div className='error'>
+    <div className='error' style={notificationStyle}>
       {message}
     </div>
   )
@@ -24,6 +33,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNumber] = useState("")
   const [errorMessage, setErrorMessage] = useState('')
+  const [errorColor, setColor] = useState('green')
 
   useEffect(() => {
     personService
@@ -133,12 +143,16 @@ const DeletePersonFromArray=(id)=>{
         })
 
         .catch(error => {
+          //setColor('red')
           setErrorMessage(
             `infromation of ${newName} has already removed from server`
           )
+          setColor('red')
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
+
+          
           
         })
 
@@ -190,7 +204,7 @@ const DeletePersonFromArray=(id)=>{
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} givencolor={errorColor} />
       <Filter/>
       <form onSubmit={addPerson}>
       <h2>Add a new</h2>
