@@ -6,13 +6,24 @@ import personService from './services/persons'
 import axios from 'axios'
 
 
+const Notification = ({ message }) => {
+  if (message === null || message=== '') {
+    return null
+  }
 
+  return (
+    <div className='error'>
+      {message}
+    </div>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([])
   
   const [newName, setNewName] = useState('')
   const [newNumber, setNumber] = useState("")
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     personService
@@ -120,6 +131,17 @@ const DeletePersonFromArray=(id)=>{
         .then(updateperson => {
           setPersons(persons.map(P => P.id !== id ? P : updateperson))
         })
+
+        .catch(error => {
+          setErrorMessage(
+            `infromation of ${newName} has already removed from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          
+        })
+
         return
       
       
@@ -142,9 +164,20 @@ const DeletePersonFromArray=(id)=>{
         setPersons(persons.concat(response))
         //console.log(persons)
       })
-      console.log(persons)
+
+      
+      //console.log(persons)
     setNewName("")
     setNumber("")
+
+
+
+    setErrorMessage(
+      `Added ${newName}`
+    )
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
     
     
   }
@@ -157,6 +190,7 @@ const DeletePersonFromArray=(id)=>{
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter/>
       <form onSubmit={addPerson}>
       <h2>Add a new</h2>
