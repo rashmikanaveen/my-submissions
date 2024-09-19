@@ -1,14 +1,18 @@
-const ShowFilterCountries = (props) => {
-    const filterdPersons = props.filterdPersons
-    return(
-      <div>
-        <p>{filterdPersons.length} results</p>
-        {filterdPersons.map((person, index) => (
-        <p key={index} style={{ margin: '0px ' }}>{person.name} {person.number}</p>
-  ))}
-      </div>
+
+
+  const ShowFilterCountries = ({ filterdCountries }) => {
   
-    )
-  }
+
+    return (
+      <div>
+        {filterdCountries.map((country, index) => (
+          <div key={index}>
+            {country.name.common}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
 
   export default ShowFilterCountries;

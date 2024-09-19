@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import filter from './components/filter.jsx';
+import Filter from './components/filter.jsx';
 
 
 
@@ -20,17 +20,17 @@ const ShowCountries = ({ countries }) => {
 };
 
 const App=()=> {
-  const [value, setValue] = useState('')
+  
   const [countries, setCountries] = useState([])
   
-  const [country, setCountry] = useState({})
+  
 
   
 
 
   
   useEffect(() => {
-    console.log('effect run, country is now', country)
+    
 
     console.log('fetching countries...')
       axios
@@ -47,10 +47,7 @@ const App=()=> {
     return null
   }
 
-  const OnSearch = () => {
-    
-    filter(countries)
-  }
+  
 
   const handleChange = (event) => {
     setValue(event.target.value)
@@ -60,10 +57,8 @@ const App=()=> {
     <div>
       
 
-      <OnSearch/>
-      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      <hr />
-      <ShowCountries countries={countries} />
+      <Filter countries={countries} />
+      
       
       
     </div>

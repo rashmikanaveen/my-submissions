@@ -2,9 +2,15 @@
 import { useState,useEffect } from 'react'
 import ShowFilterCountries from './ShowFilterCountries'
 
-const filter=({countries})=>{
-    console.log("ok")
-    //const persons=props.persons
+const Filter=({countries})=>{
+    if (!Array.isArray(countries)) {
+        //console.log('Countries is not an array or is undefined');
+        return null;
+      }
+    
+
+    //console.log(countries[0])
+    
     
     const [filterdCountries, setfilterCountry] = useState([])
     const [filter, setFilter] = useState("")
@@ -22,11 +28,12 @@ const filter=({countries})=>{
     event.preventDefault()
     if(filter === ""){
       setfilterCountry([])
+      console.log("empty")
     }
     else{
       const subfilterInLowerCase = filter.toLowerCase()
     
-    setfilterCountry(countries.filter(person => person.name.toLowerCase().includes(subfilterInLowerCase)))
+    setfilterCountry(countries.filter(country => country.name.common.toLowerCase().includes(subfilterInLowerCase)))
     }
     
 
@@ -35,17 +42,18 @@ const filter=({countries})=>{
     
     return(
         <div> 
+            
         <div>
   
-          find countries<br /> <input type="text" placeholder='Ex:- enter a or A' value={filter} onChange={changeFilter}/>
+          find countries <input type="text" placeholder='Ex:- enter a or A' value={filter} onChange={changeFilter}/>
           <button type="submit" onClick={findCountry}>Show</button>
         </div>
         
-        <ShowFilterCountries filterdPersons={filterdCountries}/>
+        <ShowFilterCountries filterdCountries={filterdCountries}/>
         
       </div>
 
     )
 
 }
-export default filter;
+export default Filter;
