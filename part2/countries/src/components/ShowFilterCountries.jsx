@@ -1,12 +1,5 @@
-
-
-const ShowFilterCountries = ({ filterdCountries }) => {
-  if(filterdCountries.length > 10){
-   return <div>Too many matches, specify another filter</div>
-  }
-  else if(filterdCountries.length === 1){
-    const country=filterdCountries[0]
-    const imgSource=country.flags['png']
+const CountryDetails=({country})=>{
+  const imgSource=country.flags['png']
     return (
       <div>
         <h2>{country.name.common}</h2>
@@ -28,6 +21,21 @@ const ShowFilterCountries = ({ filterdCountries }) => {
         </div>
       </div>
     );
+
+}
+
+const ShowFilterCountries = ({ filterdCountries }) => {
+  if(filterdCountries.length > 10){
+   return <div>Too many matches, specify another filter</div>
+  }
+  else if(filterdCountries.length === 1){
+    const country=filterdCountries[0]
+    
+    return (
+      <div>
+        <CountryDetails country={country}/>
+      </div>
+    );
     
 
   }
@@ -36,7 +44,7 @@ const ShowFilterCountries = ({ filterdCountries }) => {
      <div>
        {filterdCountries.map((country, index) => (
          <div key={index}>
-           {country.name.common}
+           {country.name.common} <button onClick={() => CountryDetails(country)}>show</button>
          </div>
        ))}
      </div>
