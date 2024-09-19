@@ -24,7 +24,7 @@ const CountryDetails=({country})=>{
 
 
 
-  console.log(wetherOfCapital)
+  //console.log(wetherOfCapital)
   const imgSource=country.flags['png']
   const weatherIcon = wetherOfCapital && wetherOfCapital.weather && wetherOfCapital.weather[0] && wetherOfCapital.weather[0].icon;
   const wether_img_sourse = weatherIcon ? `https://openweathermap.org/img/wn/${weatherIcon}@2x.png` : '';
@@ -53,7 +53,7 @@ const CountryDetails=({country})=>{
 
         <div>
           <h2>Wether in {country.capital}</h2>
-          <div>temperature {wetherOfCapital.main.temp} Celcius</div>
+          <div>temperature {(wetherOfCapital.main.temp - 273.15).toFixed(2)} Celsius</div>
           <img src={wether_img_sourse} alt="" />
         </div>
 
@@ -66,7 +66,7 @@ const CountryDetails=({country})=>{
 const ShowFilterCountries = ({ filterdCountries }) => {
   const [countriesToShow, setcountriesToShow] = useState(null);
   //const [countryToShow, setCountryToShow] = useState('');
-  console.log(api_key)
+  //console.log(api_key)
   
 
   
