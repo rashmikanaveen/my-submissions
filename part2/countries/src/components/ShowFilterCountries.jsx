@@ -1,18 +1,49 @@
 
 
-  const ShowFilterCountries = ({ filterdCountries }) => {
-  
-
+const ShowFilterCountries = ({ filterdCountries }) => {
+  if(filterdCountries.length > 10){
+   return <div>Too many matches, specify another filter</div>
+  }
+  else if(filterdCountries.length === 1){
+    const country=filterdCountries[0]
+    const imgSource=country.flags['png']
     return (
       <div>
-        {filterdCountries.map((country, index) => (
-          <div key={index}>
-            {country.name.common}
-          </div>
-        ))}
+        <h2>{country.name.common}</h2>
+        <div>
+          capital {country.capital} <br />
+          area {country.area}
+        </div>
+        <div>
+          <h3>languages:</h3>
+          <ul>
+            {Object.values(country.languages).map((language, index) => (<li key={index}>{language}</li>))}
+         
+           
+          </ul>
+          <img src={imgSource} alt="" />
+         
+       
+       
+        </div>
       </div>
     );
-  };
+    
 
+  }
+  else{
+   return (
+     <div>
+       {filterdCountries.map((country, index) => (
+         <div key={index}>
+           {country.name.common}
+         </div>
+       ))}
+     </div>
+   );
+  }
+
+ 
+};
 
   export default ShowFilterCountries;

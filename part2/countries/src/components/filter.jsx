@@ -18,20 +18,20 @@ const Filter=({countries})=>{
 
 
     //change the filter name
-  const changeFilter = (event) => {
-    setFilter(event.target.value)
-  }
-
+  
 
     // find the person in the phonebook
-  const findCountry = (event) => {
+  const changeFilter = (event) => {
+    const inputValue = event.target.value;
+    setFilter(inputValue)
+
     event.preventDefault()
-    if(filter === ""){
+    if(inputValue === ""){
       setfilterCountry([])
       console.log("empty")
     }
     else{
-      const subfilterInLowerCase = filter.toLowerCase()
+      const subfilterInLowerCase = inputValue.toLowerCase()
     
     setfilterCountry(countries.filter(country => country.name.common.toLowerCase().includes(subfilterInLowerCase)))
     }
@@ -46,7 +46,7 @@ const Filter=({countries})=>{
         <div>
   
           find countries <input type="text" placeholder='Ex:- enter a or A' value={filter} onChange={changeFilter}/>
-          <button type="submit" onClick={findCountry}>Show</button>
+          
         </div>
         
         <ShowFilterCountries filterdCountries={filterdCountries}/>

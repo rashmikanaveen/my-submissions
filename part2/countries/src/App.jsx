@@ -37,6 +37,7 @@ const App=()=> {
         .get(`https://studies.cs.helsinki.fi/restcountries/api/all`)
         .then(response => {
           setCountries(response.data)
+          console.log('finish fetching data from server')
           //setCountries(response.data.name.common)
         })
   }, [])
