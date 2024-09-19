@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import filter from './components/filter.jsx';
 
 
 
 const ShowCountries = ({ countries }) => {
-  if (!Array.isArray(countries)) {
-    return null; // Ensure countries is an array
-  }
+  
 
   return (
     <div>
@@ -23,11 +22,13 @@ const ShowCountries = ({ countries }) => {
 const App=()=> {
   const [value, setValue] = useState('')
   const [countries, setCountries] = useState([])
+  
   const [country, setCountry] = useState({})
-  console.log('hello')
+
+  
 
 
-
+  
   useEffect(() => {
     console.log('effect run, country is now', country)
 
@@ -39,14 +40,16 @@ const App=()=> {
           //setCountries(response.data.name.common)
         })
   }, [])
+  
 
-  if(country=== null){
+  if(countries=== null){
+    console.log("No country found")
     return null
   }
 
-  const onSearch = (event) => {
-    event.preventDefault()
-    setCountry(value)
+  const OnSearch = () => {
+    
+    filter(countries)
   }
 
   const handleChange = (event) => {
@@ -55,11 +58,13 @@ const App=()=> {
 
   return (
     <div>
-      <form onSubmit={onSearch}>
-        find countries: <input value={value} onChange={handleChange} />
-        <button type="submit"></button>
-      </form>
-      <ShowCountries countries={countries}/>
+      
+
+      <OnSearch/>
+      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      <hr />
+      <ShowCountries countries={countries} />
+      
       
     </div>
   )
