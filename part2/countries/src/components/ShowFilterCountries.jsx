@@ -29,13 +29,14 @@ const CountryDetails=({country})=>{
 
 
 const ShowFilterCountries = ({ filterdCountries }) => {
-  const [countriesToShow, setcountriesToShow] = useState(null);
+  const [countriesToShow, setcountriesToShow] = useState([]);
   //const [countryToShow, setCountryToShow] = useState('');
+  
 
   
   const ShowCountry=()=>{
     
-    if(countriesToShow !== null){
+    if(countriesToShow.length !==0){
       console.log(countriesToShow)
       
       return(
@@ -49,13 +50,16 @@ const ShowFilterCountries = ({ filterdCountries }) => {
     }
       
 
-    const SetNull=()=>{
-      setcountriesToShow(null)
-    }
+    
 
 
   
   }
+  const SetEmpty=()=>{
+    setcountriesToShow([])
+  }
+  if(filterdCountries.length > 0){
+  
 
   if(filterdCountries.length > 10){
    return <div>Too many matches, specify another filter</div>
@@ -80,11 +84,12 @@ const ShowFilterCountries = ({ filterdCountries }) => {
          </div>
        ))}
        <ShowCountry/>
+       
      </div>
 
    );
   }
-
+}
  
 };
 
