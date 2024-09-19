@@ -1,4 +1,7 @@
+import React, { useState } from 'react';
+
 const CountryDetails=({country})=>{
+  //console.log(country.name.common)
   const imgSource=country.flags['png']
     return (
       <div>
@@ -24,7 +27,36 @@ const CountryDetails=({country})=>{
 
 }
 
+
 const ShowFilterCountries = ({ filterdCountries }) => {
+  const [countriesToShow, setcountriesToShow] = useState(null);
+  //const [countryToShow, setCountryToShow] = useState('');
+
+  
+  const ShowCountry=()=>{
+    
+    if(countriesToShow !== null){
+      console.log(countriesToShow)
+      
+      return(
+        <div>
+        <CountryDetails country={countriesToShow}/>
+        
+        </div>
+      )
+      
+
+    }
+      
+
+    const SetNull=()=>{
+      setcountriesToShow(null)
+    }
+
+
+  
+  }
+
   if(filterdCountries.length > 10){
    return <div>Too many matches, specify another filter</div>
   }
@@ -44,10 +76,12 @@ const ShowFilterCountries = ({ filterdCountries }) => {
      <div>
        {filterdCountries.map((country, index) => (
          <div key={index}>
-           {country.name.common} <button onClick={() => CountryDetails(country)}>show</button>
+           {country.name.common} <button onClick={() => setcountriesToShow(country)}>show</button>
          </div>
        ))}
+       <ShowCountry/>
      </div>
+
    );
   }
 
