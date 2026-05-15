@@ -2,7 +2,6 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const connectDB = require('./db')
-const personsRouter = require('./routes/persons')
 
 const app = express()
 
@@ -16,7 +15,7 @@ app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
-app.use('/api/persons', personsRouter)
+
 
 const startServer = async () => {
   try {
@@ -33,3 +32,6 @@ const startServer = async () => {
 }
 
 startServer()
+
+const personsRouter = require('./routes/persons')
+app.use('/api/persons', personsRouter)

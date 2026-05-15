@@ -18,6 +18,7 @@ const Notification = ({ message, givencolor }) => {
 }
 
 const App = () => {
+  const [allPersons, setAllPersons] = useState([])
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNumber] = useState("")
@@ -28,6 +29,7 @@ const App = () => {
     personService
       .getAll()
       .then(response => {
+        setAllPersons(response)
         setPersons(response)
       })
   }, [])
@@ -43,7 +45,7 @@ const App = () => {
             <span className="text-gray-500 ml-3">{person.number}</span>
           </span>
           <button
-            onClick={() => DeleteNameAndNumber(person.id, 'Do you really want to delete this contact?')}
+            onClick={() => DeleteNameAndNumber(person._id, 'Do you really want to delete this contact?')}
             className="ml-4 px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
           >
             delete
@@ -64,7 +66,7 @@ const App = () => {
         <p className="text-sm text-gray-500 mb-2">{persons.length} results</p>
         <ul className="border border-gray-200 rounded-md divide-y divide-gray-100">
           {persons.map((person) => (
-            <ShowPerson key={person.id} person={person} />
+            <ShowPerson key={person._id} person={person} />
           ))}
         </ul>
       </div>
@@ -72,10 +74,11 @@ const App = () => {
   };
 
   const DeletePersonFromArray = (id) => {
-    const changPersons = persons.filter(person => person.id !== id)
-    personService.removename(id)
-      .then(setPersons(changPersons))
-  }
+  personService.removename(id).then(() => {
+    setAllPersons(prev => prev.filter(p => p._id !== id && p.id !== id))
+    setPersons(prev => prev.filter(p => p._id !== id && p.id !== id))
+  })
+}
 
   const changeName = (event) => {
     setNewName(event.target.value)
@@ -91,40 +94,19 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    const exist = persons.some(person => person.name.toLowerCase() === newName.toLowerCase())
-
-    if (exist) {
-      const existperson = persons.find(item => item.name === newName);
-      const id = existperson ? existperson.id : null;
-      const userConfirm = window.confirm(newName + ' is alreaddy added to phonebook, replace the old number with a new one?')
-
-      if (userConfirm) {
-        personService
-          .update(id, personObject)
-          .then(updateperson => {
-            setPersons(persons.map(P => P.id !== id ? P : updateperson))
-          })
-          .catch(error => {
-            setErrorMessage(`infromation of ${newName} has already removed from server`)
-            setColor('red')
-            setTimeout(() => { setErrorMessage(null) }, 5000)
-          })
-        return
-      } else {
-        return
-      }
-    }
 
     personService
       .create(personObject)
       .then(response => {
+        setAllPersons(prev => prev.concat(response))
         setPersons(persons.concat(response))
       })
+      .catch(error => {
+      setErrorMessage(error.response?.data?.error || 'Error adding contact')
+      setColor('red')
+      setTimeout(() => { setErrorMessage(null) }, 5000)
+    })
 
-    setNewName("")
-    setNumber("")
-    setErrorMessage(`Added ${newName}`)
-    setTimeout(() => { setErrorMessage(null) }, 5000)
   }
 
   return (
@@ -147,8 +129,8 @@ const App = () => {
         {/* LEFT SIDE - Filter */}
         <div className="w-64 shrink-0">
           <div className="bg-white shadow-md rounded-lg p-5 sticky top-10">
-            <h2 className="text-lg font-semibold text-gray-700 mb-3">🔍 Search</h2>
-            <Filter />
+            <h2 className="text-lg font-semibold text-gray-700 mb-3"> Search</h2>
+            <Filter persons={allPersons} onFilter={(filtered) => setPersons(filtered)} />
           </div>
         </div>
 
@@ -157,7 +139,7 @@ const App = () => {
 
           {/* Add Contact Form */}
           <div className="bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">➕ Add a new contact</h2>
+            <h2 className="text-xl font-semibold text-gray-700 mb-4"> Add a new contact</h2>
             <form onSubmit={addPerson} className="space-y-3">
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">Name</label>
