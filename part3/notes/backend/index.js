@@ -3,8 +3,9 @@ const app = express()
 const connectDB = require('./db')
 const errorHandler = require('./middleware/errorHandler')
 const notesRouter = require('./routes/notes')
+const cors = require('cors')
 
-
+app.use(cors())
 app.use(express.json())
 
 app.use('/api/notes', notesRouter)

@@ -57,11 +57,26 @@ const deleteNote = async (request, response, next) => {
     }
 }
 
+const toggleImportant = async (request, response, next) => {
+    try {
+        const { id } = request.params
+        const note = await Note.findById(id)
+        if (!note) {
+            return response.status(404).json({ error: 'note not found' })
+        }
+        note.important = !note.important
+        const updatedNote = await note.save()
+        return response.json(updatedNote)
+    } catch (error) {
+        return next(error)
+    }
+}
 
 
 module.exports = {
     getAllNotes,
     getNoteById,
     deleteNote,
-    createNote
+    createNote,
+    toggleImportant
 }
