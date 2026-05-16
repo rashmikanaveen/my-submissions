@@ -10,7 +10,7 @@ const connectDB = async () => {
 
   mongoose.set('strictQuery', false)
 
-  await mongoose.connect(url, { family: 4 })
+  await mongoose.connect(url)
   console.log('connected to MongoDB')
 }
 
