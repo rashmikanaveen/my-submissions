@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const connectDB = require('./db')
+const errorHandler = require('./middleware/errorHandler')
 
 const app = express()
 
@@ -45,3 +46,4 @@ const unknownEndpoint = (request, response) => {
 
 // handler of requests with unknown endpoint
 app.use(unknownEndpoint)
+app.use(errorHandler)

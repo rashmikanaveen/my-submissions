@@ -1,8 +1,7 @@
 //import '../App.css'; 
-import { useState, useEffect } from 'react'
-import personService from '../services/persons'
+import { useState } from 'react'
 const Filter = ({ persons = [], onFilter }) => {
-  const [filter, setFilter] = useState("")
+  const [filter, setFilter] = useState('')
 
 
   //change the filter name
@@ -47,4 +46,4 @@ const Filter = ({ persons = [], onFilter }) => {
   )
 
 }
-export default Filter;
+export default Filter

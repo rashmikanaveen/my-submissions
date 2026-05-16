@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
-import './App.css';
+import './App.css'
 import personService from './services/persons'
 
 const Notification = ({ message, givencolor }) => {
@@ -21,7 +21,7 @@ const App = () => {
   const [allPersons, setAllPersons] = useState([])
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
-  const [newNumber, setNumber] = useState("")
+  const [newNumber, setNumber] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [errorColor, setColor] = useState('green')
 
@@ -35,7 +35,7 @@ const App = () => {
   }, [])
 
   const PersonsAndNames = (props) => {
-    const persons = props.persons;
+    const persons = props.persons
 
     const ShowPerson = ({ person }) => {
       return (
@@ -51,15 +51,15 @@ const App = () => {
             delete
           </button>
         </li>
-      );
-    };
+      )
+    }
 
     const DeleteNameAndNumber = (id, str) => {
       const userConfirm = window.confirm(str)
       if (userConfirm) {
         DeletePersonFromArray(id)
       }
-    };
+    }
 
     return (
       <div>
@@ -70,15 +70,15 @@ const App = () => {
           ))}
         </ul>
       </div>
-    );
-  };
+    )
+  }
 
   const DeletePersonFromArray = (id) => {
-  personService.removename(id).then(() => {
-    setAllPersons(prev => prev.filter(p => p._id !== id && p.id !== id))
-    setPersons(prev => prev.filter(p => p._id !== id && p.id !== id))
-  })
-}
+    personService.removename(id).then(() => {
+      setAllPersons(prev => prev.filter(p => p._id !== id && p.id !== id))
+      setPersons(prev => prev.filter(p => p._id !== id && p.id !== id))
+    })
+  }
 
   const changeName = (event) => {
     setNewName(event.target.value)
@@ -105,6 +105,7 @@ const App = () => {
           setPersons(prev => prev.map(p => p._id === existingPerson._id ? response : p))
         })
         .catch(error => {
+          console.error('Error updating contact:', error)
           setErrorMessage(error.response?.data?.error || 'Error updating contact')
           setColor('red')
           setTimeout(() => { setErrorMessage(null) }, 5000)
@@ -119,10 +120,10 @@ const App = () => {
         setPersons(persons.concat(response))
       })
       .catch(error => {
-      setErrorMessage(error.response?.data?.error || 'Error adding contact')
-      setColor('red')
-      setTimeout(() => { setErrorMessage(null) }, 5000)
-    })
+        setErrorMessage(error.response?.data?.error || 'Error adding contact')
+        setColor('red')
+        setTimeout(() => { setErrorMessage(null) }, 5000)
+      })
 
   }
 
@@ -175,7 +176,7 @@ const App = () => {
                   onChange={changeNumber}
                   required
                   type="tel"
-                  placeholder="Enter the number"
+                  placeholder="Enter the number ex: 0123456789"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
@@ -200,4 +201,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App

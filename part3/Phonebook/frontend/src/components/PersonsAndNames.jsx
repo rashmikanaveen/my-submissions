@@ -1,16 +1,14 @@
-import React from 'react';
-import '../App.css'; 
+import React from 'react'
+import '../App.css' 
 import axios from 'axios'
-import { useState,useEffect } from 'react'
-//import personService from './services/persons'
-import personService from '../services/persons'
+
 
 
 
 
 
 const PersonsAndNames = (props) => {
-  const persons = props.persons;
+  const persons = props.persons
   
 
   
@@ -20,17 +18,15 @@ const PersonsAndNames = (props) => {
       <li>
         {person.name} {person.number} <button onClick={() => DeleteNameAndNumber(person.id)}>delete</button>
       </li>
-    );
-  };
+    )
+  }
 
   const DeleteNameAndNumber = (id) => {
     //console.log(name + ' wants to be deleted');
     const url = `http://localhost:3001/persons/${id}`
-    
-    const changPersons=persons.filter(person => person.id !== id)
     axios.delete(url).then(console.log('deleted'))
     
-  };
+  }
 
   
 
@@ -43,7 +39,7 @@ const PersonsAndNames = (props) => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default PersonsAndNames;
+export default PersonsAndNames
