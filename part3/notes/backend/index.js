@@ -23,6 +23,26 @@ let notes = [
   }
 ]
 
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+
+
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+app.use(errorHandler)
+
+
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
@@ -34,13 +54,12 @@ app.get('/api/notes', (request, response) => {
 app.get('/api/notes/:id', (request, response) => {
   const id = request.params.id
   const note = notes.find(note => note.id === id)
-  
+
   if (note) {
     response.json(note)
   } else {
     response.status(404).end()
   }
-
 })
 
 app.delete('/api/notes/:id', (request, response) => {
@@ -77,6 +96,8 @@ app.post('/api/notes', (request, response) => {
   response.json(note)
 })
 
+// handler of requests with unknown endpoint
+app.use(unknownEndpoint)
 
 const PORT = 3000
 app.listen(PORT, () => {

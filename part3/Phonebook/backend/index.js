@@ -11,9 +11,8 @@ app.use(express.json())
 morgan.token('body', (request) => JSON.stringify(request.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
-})
+
+const personsRouter = require('./routes/persons')
 
 
 
@@ -33,5 +32,16 @@ const startServer = async () => {
 
 startServer()
 
-const personsRouter = require('./routes/persons')
+
+app.get('/', (request, response) => {
+  response.send('<h1>Hello World!</h1>')
+})
+
 app.use('/api/persons', personsRouter)
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+// handler of requests with unknown endpoint
+app.use(unknownEndpoint)

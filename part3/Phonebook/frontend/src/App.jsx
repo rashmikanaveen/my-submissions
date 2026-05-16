@@ -95,6 +95,23 @@ const App = () => {
       number: newNumber
     }
 
+    const existingPerson = allPersons.find(p => p.name === newName)
+
+    if (existingPerson) {
+      personService
+        .update(existingPerson._id, personObject)
+        .then(response => {
+          setAllPersons(prev => prev.map(p => p._id === existingPerson._id ? response : p))
+          setPersons(prev => prev.map(p => p._id === existingPerson._id ? response : p))
+        })
+        .catch(error => {
+          setErrorMessage(error.response?.data?.error || 'Error updating contact')
+          setColor('red')
+          setTimeout(() => { setErrorMessage(null) }, 5000)
+        })
+      return
+    }
+
     personService
       .create(personObject)
       .then(response => {

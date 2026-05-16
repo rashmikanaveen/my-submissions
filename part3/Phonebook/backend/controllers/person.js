@@ -36,6 +36,21 @@ const getAllPersons = async (request, response, next) => {
 	}
 }
 
+const getUserById = async (request, response, next) => {
+	try {
+		const { id } = request.params
+		const person = await Phonebook.findById(id)
+
+		if (!person) {
+			return response.status(404).json({ error: 'person not found' })
+		}
+		return response.json(person)
+
+	}
+	catch (error) {
+		return next(error)
+	}
+}
 
 const deletePerson = async (request, response, next) => {
 	try {
@@ -51,9 +66,35 @@ const deletePerson = async (request, response, next) => {
 	}
 }
 
+const updatePerson = async (request, response, next) => {
+	try {
+		const { id } = request.params
+		const { name, number } = request.body
+		if ( !number) {
+			return response.status(400).json({ error: 'number is required' })
+		}
+		const updatedPerson = await Phonebook.findByIdAndUpdate(
+			id,
+			{ name, number },
+			{ returnDocument: 'after', runValidators: true, context: 'query' }
+		)
+		if (!updatedPerson) {
+			return response.status(404).json({ error: 'person not found' })
+		}
+		else{
+			return response.json(updatedPerson)
+		}	
+	}
+	catch (error) {
+		return next(error)
+	}
+
+}
 module.exports = {
 	createPerson,
 	getAllPersons,
 	deletePerson,
+	updatePerson,
+	getUserById,
 }
 
