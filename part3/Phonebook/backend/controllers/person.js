@@ -70,7 +70,7 @@ const updatePerson = async (request, response, next) => {
 	try {
 		const { id } = request.params
 		const { name, number } = request.body
-		if ( !number) {
+		if (!number) {
 			return response.status(400).json({ error: 'number is required' })
 		}
 		const updatedPerson = await Phonebook.findByIdAndUpdate(
@@ -81,9 +81,9 @@ const updatePerson = async (request, response, next) => {
 		if (!updatedPerson) {
 			return response.status(404).json({ error: 'person not found' })
 		}
-		else{
+		else {
 			return response.json(updatedPerson)
-		}	
+		}
 	}
 	catch (error) {
 		return next(error)

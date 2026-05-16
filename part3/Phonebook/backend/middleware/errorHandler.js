@@ -1,15 +1,15 @@
 const errorHandler = (error, request, response) => {
-  console.error(error.message)
+    console.error(error.message)
 
-  if (error.name === 'CastError') {
-    return response.status(400).json({ error: 'malformatted id' })
-  }
+    if (error.name === 'CastError') {
+        return response.status(400).json({ error: 'malformatted id' })
+    }
 
-  if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: 'validation failed' })
-  }
+    if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: 'validation failed' })
+    }
 
-  return response.status(500).json({ error: 'internal server error' })
+    return response.status(500).json({ error: 'internal server error' })
 }
 
 module.exports = errorHandler
