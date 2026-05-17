@@ -7,7 +7,7 @@ const connectDB = async () => {
 
   if (!url) {
     logger.error('MONGODB_URI is not defined in the .env file')
-    process.exit(1) 
+    process.exit(1)
   }
 
   mongoose.set('strictQuery', false)
