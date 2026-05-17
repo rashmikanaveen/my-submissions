@@ -9,7 +9,7 @@ const errorHandler = (error, request, response) => {
         return response.status(400).json({ error: 'validation failed' })
     }
 
-    return response.status(500).json({ error: 'internal server error' })
+    next(error)
 }
 
 module.exports = errorHandler
