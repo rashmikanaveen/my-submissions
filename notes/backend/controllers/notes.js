@@ -19,7 +19,7 @@ const getAllNotes = async (request, response) => {
 }
 
 
-const getNoteById = async (request, response) => {
+const getNoteById = async (request, response,next) => {
     const { id } = request.params
     const note = await Note.findById(id)
     if (!note) {

@@ -20,4 +20,30 @@ const addBlog = async (request, response, next) => {
         return response.status(201).json(savedBlog)
 }
 
-module.exports = { getAll, addBlog }
+
+const deleteBlog = async (request, response, next) =>{
+    const id = request.params.id
+    const deletedBlog = await Blog.findByIdAndDelete(id)
+
+    if (!deletedBlog) {
+        return response.status(404).json({ error: 'Blog not found' })
+    }
+    return response.status(204).end()
+}
+
+const updateBlogLike = async (request, response, next) => {
+    const id = request.params.id
+    const { likes } = request.body
+    const updatedBlog = await Blog.findByIdAndUpdate(
+        id,
+        {likes },
+        { returnDocument: 'after' }
+    )
+    if (!updatedBlog) {
+        return response.status(404).json({ error: 'blog not found' })
+    }
+
+    response.json(updatedBlog)
+}
+
+module.exports = { getAll, addBlog ,deleteBlog,updateBlogLike}

@@ -77,15 +77,15 @@ describe("Blog list api tests", () => {
     })
 
     test('blog without title or url not added', async () => {
-        const newBlogWithotTitle={
+        const newBlogWithotTitle = {
             author: 'Leslie Lamport',
             url: 'https://example.com/software-reliability',
             likes: 1,
         }
-        const newBlogWithoutUrl={
-           title: 'Test blog',
+        const newBlogWithoutUrl = {
+            title: 'Test blog',
             author: 'Test Author',
-            likes:23,
+            likes: 23,
         }
         await api
             .post('/api/blogs')
@@ -99,14 +99,51 @@ describe("Blog list api tests", () => {
             .post('/api/blogs')
             .send(newBlogWithoutUrl)
             .expect(400)
-        
+
         const blogsAtEnd2 = await helper.blogsInDb()
         assert.strictEqual(blogsAtEnd2.length, helper.initialBlogs.length)
     })
-        
+
+
 
 
 })
+
+describe('deletion of a blog', () => {
+    test('succeeds with status code 204 if id is valid', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToDelete = blogsAtStart[0]
+
+        await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        const ids = blogsAtEnd.map(n => n.id)
+        assert(!ids.includes(blogToDelete.id))
+
+        assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
+    })
+})
+
+describe('updating a blog likes', () => {
+    test('succeeds with status code 200 if id is valid', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToUpdate = blogsAtStart[0]
+        const updatedBlogData = {
+            likes: 42
+        }
+        const response = await api
+            .put(`/api/blogs/${blogToUpdate.id}`)
+            .send(updatedBlogData)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        assert.strictEqual(response.body.likes, updatedBlogData.likes)
+
+    }
+    )
+})
+
+
 after(async () => {
     await mongoose.connection.close()
 })
