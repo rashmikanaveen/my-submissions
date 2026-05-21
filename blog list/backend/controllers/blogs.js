@@ -1,18 +1,12 @@
 const Blog = require('../models/blog')
 
-const getAll = async (request, response, next) => {
-    try{
-        const blogs = await Blog.find({})
-        return response.json(blogs)
-    }
-    catch (error) {
-        return next(error)
-    }
+const getAll = async (request, response) => {
+    const blogs = await Blog.find({})
+    return response.json(blogs)
 }
 
 const addBlog = async (request, response, next) => {
-    try {
-        const { title, author, url, likes } = request.body
+    const { title, author, url, likes } = request.body
         if (!title || !url) {
             return response.status(400).json({ error: 'title and url are required' })
         }
@@ -24,9 +18,6 @@ const addBlog = async (request, response, next) => {
         })
         const savedBlog = await blog.save()
         return response.status(201).json(savedBlog)
-    } catch (error) {
-        return next(error)
-    }
 }
 
-module.exports = { getAll ,addBlog}
+module.exports = { getAll, addBlog }

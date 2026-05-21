@@ -9,6 +9,13 @@ const noteSchema = new mongoose.Schema({
   important: { type: Boolean, default: false },
 })
 
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
 
 const Note =  mongoose.models.Note || mongoose.model('Note', noteSchema)
 
