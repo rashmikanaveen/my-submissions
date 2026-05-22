@@ -1,25 +1,39 @@
 const Note = require('../models/Note')
+const User = require('../models/user')
 
 const createNote = async (request, response) => {
-    const { content, important } = request.body
+    const { content, important, userId } = request.body
+
     if (!content) {
         return response.status(400).json({ error: 'content is required' })
     }
+    if (!userId) {
+        return response.status(400).json({ error: 'userId is required' })
+    }
+    const user = await User.findById(userId)
+
+    if (!user) {
+        return response.status(400).json({ error: 'user not found' })
+    }
+
     const note = new Note({
         content,
-        important: important || false
+        important: important || false,
+        user: user.id
     })
     const savedNote = await note.save()
+    user.notes = user.notes.concat(savedNote._id)
+    await user.save()
     return response.status(201).json(savedNote)
 }
 
 const getAllNotes = async (request, response) => {
-    const notes = await Note.find({})
+    const notes = await Note.find({}).populate('user', { username: 1, name: 1 })
     return response.json(notes)
 }
 
 
-const getNoteById = async (request, response,next) => {
+const getNoteById = async (request, response, next) => {
     const { id } = request.params
     const note = await Note.findById(id)
     if (!note) {
