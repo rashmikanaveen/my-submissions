@@ -6,10 +6,13 @@ const getAll = async (request, response) => {
 }
 
 const addBlog = async (request, response, next) => {
-    const { title, author, url, likes } = request.body
+    const { title, author, url, likes,userId } = request.body
         if (!title || !url) {
             return response.status(400).json({ error: 'title and url are required' })
         }
+        if (!userId) {
+        return response.status(400).json({ error: 'userId is required' })
+    }
         const blog = new Blog({
             title,
             author,
