@@ -5,11 +5,13 @@ const cors = require('cors')
 const blogsRouter = require('./routes/blogs')
 const usersRouter = require('./routes/users')
 const loginRouter = require('./routes/logIn')
+const extractToken = require('./utils/middleware/extractToken')
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use(extractToken)
 
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)

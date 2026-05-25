@@ -1,22 +1,18 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-const extractToken = require('../utils/extractToken')
 
 const getAll = async (request, response) => {
-    const blogs = await Blog.find({})
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     return response.json(blogs)
 }
 
 const addBlog = async (request, response, next) => {
-    const { title, author, url, likes, userId } = request.body
+    const { title, author, url, likes } = request.body
     if (!title || !url) {
         return response.status(400).json({ error: 'title and url are required' })
     }
-    if (!userId) {
-        return response.status(400).json({ error: 'userId is required' })
-    }
-     const decodedToken = jwt.verify(extractToken(request), process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
     if (!decodedToken.id) {
         return response.status(401).json({ error: 'token invalid' })
     }
@@ -30,7 +26,7 @@ const addBlog = async (request, response, next) => {
         author,
         url,
         likes: likes || 0,
-        user: userId
+        user: user.id
     })
     const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
@@ -41,11 +37,27 @@ const addBlog = async (request, response, next) => {
 
 const deleteBlog = async (request, response, next) => {
     const id = request.params.id
-    const deletedBlog = await Blog.findByIdAndDelete(id)
+
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!decodedToken.id) {
+        return response.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
+
+    if (!user) {
+        return response.status(400).json({ error: 'user not found' })
+    }
+    const deletedBlog = await Blog.findById(id)
+
 
     if (!deletedBlog) {
         return response.status(404).json({ error: 'Blog not found' })
     }
+    if (deletedBlog.user.toString() !== user.id.toString()) {
+        return response.status(403).json({ error: 'only the creator can delete the blog' })
+    }
+    //console.log('deleting blog with id:', id)
+    await Blog.findByIdAndDelete(id)
     return response.status(204).end()
 }
 
