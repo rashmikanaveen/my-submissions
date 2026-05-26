@@ -57,6 +57,18 @@ const initialBlogs = [
         },
     ]
 
+const users=[
+    {
+        username: 'testuser1',
+        name: 'Test User 1',
+        password: 'password1'
+    },
+    {
+        username: 'testuser2',
+        name: 'Test User 2',
+        password: 'password2'
+    }
+]
 
 const blogsInDb = async () => {
   const blog = await Blog.find({})

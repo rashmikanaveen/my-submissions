@@ -1,6 +1,5 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const jwt = require('jsonwebtoken')
 
 const getAll = async (request, response) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -12,15 +11,8 @@ const addBlog = async (request, response, next) => {
     if (!title || !url) {
         return response.status(400).json({ error: 'title and url are required' })
     }
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!decodedToken.id) {
-        return response.status(401).json({ error: 'token invalid' })
-    }
-    const user = await User.findById(decodedToken.id)
+    const user = request.user
 
-    if (!user) {
-        return response.status(400).json({ error: 'user not found' })
-    }
     const blog = new Blog({
         title,
         author,
@@ -38,22 +30,15 @@ const addBlog = async (request, response, next) => {
 const deleteBlog = async (request, response, next) => {
     const id = request.params.id
 
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!decodedToken.id) {
-        return response.status(401).json({ error: 'token invalid' })
-    }
-    const user = await User.findById(decodedToken.id)
+    const user = request.user  
 
-    if (!user) {
-        return response.status(400).json({ error: 'user not found' })
-    }
-    const deletedBlog = await Blog.findById(id)
+    const blog = await Blog.findById(id)
 
 
-    if (!deletedBlog) {
+    if (!blog) {
         return response.status(404).json({ error: 'Blog not found' })
     }
-    if (deletedBlog.user.toString() !== user.id.toString()) {
+    if (blog.user.toString() !== user.id.toString()) {
         return response.status(403).json({ error: 'only the creator can delete the blog' })
     }
     //console.log('deleting blog with id:', id)

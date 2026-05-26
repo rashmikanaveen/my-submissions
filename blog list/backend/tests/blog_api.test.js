@@ -6,6 +6,11 @@ const app = require('../app')
 const assert = require('node:assert')
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
+
+
+let token
 
 
 
@@ -16,6 +21,18 @@ before(async () => {
 
 beforeEach(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', name: 'Root User', passwordHash })
+    await user.save()
+
+    const loginResponse = await api
+        .post('/api/login')
+        .send({ username: 'root', password: 'sekret' })
+        .expect(200)
+
+    token = loginResponse.body.token
     await Blog.insertMany(helper.initialBlogs)
 })
 
@@ -25,7 +42,7 @@ describe("Blog list api tests", () => {
 
     test('blogs are returned as json', async () => {
         await api
-            .get('/api/blogs ')
+            .get('/api/blogs')
             .expect(200)
             .expect('Content-Type', /application\/json/)
     })
@@ -48,6 +65,7 @@ describe("Blog list api tests", () => {
 
         await api
             .post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
             .send(newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -69,6 +87,7 @@ describe("Blog list api tests", () => {
 
         const response = await api
             .post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
             .send(newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -89,6 +108,7 @@ describe("Blog list api tests", () => {
         }
         await api
             .post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
             .send(newBlogWithotTitle)
             .expect(400)
 
@@ -97,6 +117,7 @@ describe("Blog list api tests", () => {
 
         await api
             .post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
             .send(newBlogWithoutUrl)
             .expect(400)
 
@@ -107,21 +128,50 @@ describe("Blog list api tests", () => {
 
 
 
+    test('fails with status code 401 if token is not provided', async () => {
+        const newBlog = {
+            title: 'Unauthorized blog',
+            author: 'No Token',
+            url: 'https://example.com/unauthorized-blog',
+            likes: 3,
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(401)
+    })
+
 })
 
 describe('deletion of a blog', () => {
     test('succeeds with status code 204 if id is valid', async () => {
-        const blogsAtStart = await helper.blogsInDb()
-        const blogToDelete = blogsAtStart[0]
+        const newBlog = {
+            title: 'Blog to delete',
+            author: 'Delete Tester',
+            url: 'https://example.com/blog-to-delete',
+            likes: 0,
+        }
 
-        await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+        const createdBlogResponse = await api
+            .post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
+            .send(newBlog)
+            .expect(201)
+
+        const blogToDelete = createdBlogResponse.body
+
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .expect(204)
 
         const blogsAtEnd = await helper.blogsInDb()
 
         const ids = blogsAtEnd.map(n => n.id)
         assert(!ids.includes(blogToDelete.id))
 
-        assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
+        assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
     })
 })
 
